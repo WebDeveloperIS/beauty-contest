@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #020617;
+    color: white;
+    text-align: center;
+}
+
+#login,
+#rules,
+#game {
+    padding: 20px;
+    max-width: 400px;
+    margin: 50px auto;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 12px;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background: crimson;
+    color: white;
+    cursor: pointer;
+}
+
+#chat {
+    max-height: 150px;
+    overflow-y: auto;
+    background: #111;
+    padding: 5px;
+}
+
+@media(min-width:600px) {
+    #game {
+        max-width: 600px;
+    }
+}

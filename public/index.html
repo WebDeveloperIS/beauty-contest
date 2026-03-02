@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty Contest</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Login -->
+<div id="login">
+<h2>Beauty Contest</h2>
+<input id="username" placeholder="Isming">
+<input id="room" placeholder="Xona">
+<button onclick="join()">Kirish</button>
+</div>
+
+<!-- Qoidalar oynasi -->
+<div id="rules" style="display:none;">
+<h2>O‘yin Qoidalari</h2>
+<ul>
+<li>1. Har bir raundda 1 dan 100 gacha raqam tanlaysiz.</li>
+<li>2. Maqsad: Tanlangan raqamlarning o‘rtacha qiymatining 80% ga eng yaqin raqamni tanlash.</li>
+<li>3. Har bir raund 15 soniya davom etadi.</li>
+<li>4. Raund oxirida eng yaqin raqamni tanlagan o‘yinchi yutadi.</li>
+<li>5. Chat orqali boshqa o‘yinchilar bilan yozishish mumkin.</li>
+<li>6. O‘yin davomida leaderboard ko‘rsatiladi.</li>
+</ul>
+<button onclick="startGame()">O‘yin boshlash</button>
+<audio id="rulesSound" loop>
+  <source src="sounds/rules.mp3" type="audio/mpeg">
+</audio>
+</div>
+
+<!-- Game -->
+<div id="game" style="display:none;">
+<h3>Xona: <span id="roomName"></span></h3>
+<p>O‘yinchilar: <span id="players"></span></p>
+<h2>⏳ <span id="timer">15</span></h2>
+
+<input type="number" id="num" min="1" max="100">
+<button onclick="sendNumber()">Yuborish</button>
+
+<div id="result"></div>
+
+<h3>🏆 Leaderboard</h3>
+<ul id="scores"></ul>
+
+<div id="chatBox">
+<input id="chatInput" placeholder="Xabar yoz...">
+<button onclick="sendChat()">Send</button>
+<div id="chat"></div>
+</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
