@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io(window.location.origin);
 const laserSound = new Audio("sounds/laser.mp3");
 const winSound = new Audio("sounds/win.mp3");
 const rulesSound = document.getElementById("rulesSound");
@@ -6,28 +6,30 @@ const rulesSound = document.getElementById("rulesSound");
 function join() {
   const username = document.getElementById("username").value;
   const room = document.getElementById("room").value;
-  if(!username || !room) return alert("Ism va xona kiriting!");
+  if(!username || !room) return alert("Ism va xona nomi kiriting!");
 
   socket.emit("joinRoom",{username,room});
-  
+
   document.getElementById("login").style.display="none";
-  document.getElementById("rules").style.display="block"; // Qoidalar
+  document.getElementById("rules").style.display="block";
   document.getElementById("roomName").innerText = room;
 
-} 
+  rulesSound.play();
+}
 
 function startGame() {
   document.getElementById("rules").style.display="none";
   document.getElementById("game").style.display="block";
 
-  rulesSound.pause();   // O‘yin boshlanishida to‘xtatish
+  rulesSound.pause();
   rulesSound.currentTime = 0;
 }
 
 function sendNumber(){
   const num=parseInt(document.getElementById("num").value);
-  if(num<1||num>100) return alert("1–100 oralig‘ida!");
+  if(!num || num<1 || num>100) return alert("1–100 oralig‘ida raqam kiriting!");
   socket.emit("submitNumber", num);
+  document.getElementById("num").value="";
 }
 
 function sendChat(){

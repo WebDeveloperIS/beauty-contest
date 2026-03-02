@@ -5,7 +5,8 @@ const io = require("socket.io")(http);
 
 app.use(express.static("public"));
 
-let rooms = {}; // RAM-da multiplayer
+// RAM xonalar
+let rooms = {};
 
 io.on("connection", (socket) => {
 
@@ -16,19 +17,30 @@ io.on("connection", (socket) => {
 
     if (!rooms[room]) rooms[room] = { players: [], numbers: [], scores: {}, timer: null };
 
+    // Xonaga qo‘shish
     rooms[room].players.push(socket);
     if (!rooms[room].scores[username]) rooms[room].scores[username] = 0;
 
     io.to(room).emit("players", rooms[room].players.map(p => p.username));
     io.to(room).emit("scores", rooms[room].scores);
+
+    console.log(`${username} joined room ${room}`);
+
+    // Timer boshlash faqat 2+ o‘yinchi bo‘lsa
+    if (rooms[room].players.length > 1 && !rooms[room].timer) {
+      startTimer(room);
+    }
   });
 
   socket.on("submitNumber", (num) => {
     const room = rooms[socket.room];
     if (!room) return;
+
     if (room.numbers.find(n => n.name === socket.username)) return;
 
     room.numbers.push({ name: socket.username, value: num });
+
+    // Agar barcha o‘yinchilar yuborgan bo‘lsa
     if (room.numbers.length === room.players.length) endRound(socket.room);
   });
 
@@ -80,11 +92,11 @@ function endRound(roomName) {
   io.to(roomName).emit("result", { numbers: room.numbers, target: target.toFixed(2), winner: winner.name });
   io.to(roomName).emit("scores", room.scores);
 
-  room.players = room.players.filter(p => p.username === winner.name);
   room.numbers = [];
 
   if (room.players.length > 1) startTimer(roomName);
   else io.to(roomName).emit("gameOver", winner.name);
 }
 
-http.listen(process.env.PORT || 3000, () => console.log("Server running"));
+const PORT = process.env.PORT || 3000;
+http.listen(PORT, () => console.log(`Server running on port ${PORT}`));
